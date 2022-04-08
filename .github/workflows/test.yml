@@ -21,4 +21,5 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
         with:
+          name: "Hello World"
           milliseconds: 1000
