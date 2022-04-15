@@ -21,6 +21,9 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
         name: "run my action"
+        id: myaction
         with:
           name: "Hello World"
           milliseconds: 1000
+      - run: |
+          echo '{{ steps.myaction.outputs.time }}'
