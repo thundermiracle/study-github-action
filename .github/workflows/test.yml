@@ -26,4 +26,4 @@ jobs:
           name: "Hello World"
           milliseconds: 1000
       - run: |
-          echo '{{ steps.myaction.outputs.time }}'
+          echo "${{ steps.myaction.outputs.time }}"
