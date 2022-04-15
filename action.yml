@@ -8,6 +8,9 @@ inputs:
   milliseconds:
     required: true
     description: 'input description here'
+outputs:
+  time:
+    description: time slept
 runs:
   using: 'node16'
   main: 'dist/index.js'
