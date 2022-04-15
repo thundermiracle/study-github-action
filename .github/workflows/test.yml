@@ -27,3 +27,4 @@ jobs:
           milliseconds: 1000
       - run: |
           echo "${{ steps.myaction.outputs.time }}"
+        name: print outputs
