@@ -2,6 +2,7 @@
   "name": "typescript-action",
   "version": "0.0.0",
   "private": true,
+  "packageManager": "pnpm@6.32.7",
   "description": "TypeScript template action",
   "main": "lib/main.js",
   "scripts": {
@@ -11,7 +12,7 @@
     "lint": "eslint src/**/*.ts",
     "package": "ncc build --source-map --license licenses.txt",
     "test": "jest",
-    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+    "all": "pnpm build && pnpm format && pnpm lint && pnpm package && npm test"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "@actions/core": "^1.6.0"
   },
   "devDependencies": {
+    "@jest/globals": "^27.5.1",
     "@types/node": "^16.10.5",
     "@typescript-eslint/parser": "^5.8.1",
     "@vercel/ncc": "^0.31.1",
