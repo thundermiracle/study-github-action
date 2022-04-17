@@ -9,4 +9,8 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.eslint.json',
   },
+  rules: {
+    'jest/expect-expect': 'off',
+    'eslint-comments/no-use': 'off',
+  },
 };
