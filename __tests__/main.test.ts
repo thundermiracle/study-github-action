@@ -21,7 +21,8 @@ describe('main.ts', () => {
   });
 
   // shows how the runner will run a javascript action with env / stdout protocol
-  it('runs', () => {
+  // eslint-disable-next-line jest/no-disabled-tests
+  it.skip('runs', () => {
     process.env.INPUT_MILLISECONDS = '500';
     const np = process.execPath;
     const ip = path.join(__dirname, '..', 'lib', 'main.js');
