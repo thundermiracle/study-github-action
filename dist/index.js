@@ -60,7 +60,8 @@ function run() {
                 repo: context.repo.repo,
                 pull_number: context.payload.pull_request.number,
             });
-            yield octokit.graphql(`
+            core.debug(((_a = currentPr.data.user) === null || _a === void 0 ? void 0 : _a.login) || '<no user>');
+            const graphqlPr = yield octokit.graphql(`
       query($owner: String!, $repo: String!, $pullNumber: Int!) {
         repository(owner: $owner, name: $repo) {
           pullRequest(number: $pullNumber) {
@@ -75,7 +76,7 @@ function run() {
                 repo: context.repo.repo,
                 pullNumber: context.payload.pull_request.number,
             });
-            core.debug(((_a = currentPr.data.user) === null || _a === void 0 ? void 0 : _a.login) || '<no user>');
+            core.debug(JSON.stringify(graphqlPr, null, 2));
             core.setOutput('time', new Date().toTimeString());
         }
         catch (error) {

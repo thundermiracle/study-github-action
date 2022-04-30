@@ -23,7 +23,9 @@ async function run(): Promise<void> {
       pull_number: context.payload.pull_request!.number,
     });
 
-    await octokit.graphql(
+    core.debug(currentPr.data.user?.login || '<no user>');
+
+    const graphqlPr = await octokit.graphql(
       `
       query($owner: String!, $repo: String!, $pullNumber: Int!) {
         repository(owner: $owner, name: $repo) {
@@ -42,7 +44,7 @@ async function run(): Promise<void> {
       },
     );
 
-    core.debug(currentPr.data.user?.login || '<no user>');
+    core.debug(JSON.stringify(graphqlPr, null, 2));
 
     core.setOutput('time', new Date().toTimeString());
   } catch (error) {
