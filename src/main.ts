@@ -37,6 +37,15 @@ async function run(): Promise<void> {
             author {
               login
             }
+            reviewRequests(last: 1) {
+              nodes {
+                requestedReviewer {
+                  User {
+                    login
+                  }
+                }
+              }
+            }
           }
           pullRequests(first: 2, orderBy: {field: CREATED_AT, direction: DESC}) {
             nodes {
@@ -45,10 +54,13 @@ async function run(): Promise<void> {
               author {
                 login
               }
-              suggestedReviewers {
-                isAuthor
-                reviewer {
-                  login
+              reviewRequests(last: 100) {
+                nodes {
+                  requestedReviewer {
+                    User {
+                      login
+                    }
+                  }
                 }
               }
             }
