@@ -45,8 +45,9 @@ async function run(): Promise<void> {
               author {
                 login
               }
-              reviewers(first: 100) {
-                nodes {
+              suggestedReviewers {
+                isAuthor
+                reviewer {
                   login
                 }
               }
