@@ -12,5 +12,7 @@ module.exports = {
   rules: {
     'jest/expect-expect': 'off',
     'eslint-comments/no-use': 'off',
+    '@typescript-eslint/naming-convention': 'off',
+    camelcase: 'off',
   },
 };

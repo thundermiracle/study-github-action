@@ -8,6 +8,10 @@ inputs:
   milliseconds:
     required: true
     description: 'input description here'
+  token:
+    required: false
+    description: 'token of github'
+    default: ${{ github.token }}
 outputs:
   time:
     description: time slept
