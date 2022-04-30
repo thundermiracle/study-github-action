@@ -38,6 +38,20 @@ async function run(): Promise<void> {
               login
             }
           }
+          pullRequests(first: 2, states: [OPEN], orderBy: {field: CREATED_AT, direction: DESC}) {
+            nodes {
+              id
+              createdAt
+              author {
+                login
+              }
+              reviewers(first: 100) {
+                nodes {
+                  login
+                }
+              }
+            }
+          }
         }
       }`,
       {

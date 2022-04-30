@@ -73,6 +73,20 @@ function run() {
               login
             }
           }
+          pullRequests(first: 1, states: [OPEN], orderBy: {field: CREATED_AT, direction: DESC}) {
+            nodes {
+              id
+              createdAt
+              author {
+                login
+              }
+              reviewers(first: 100) {
+                nodes {
+                  login
+                }
+              }
+            }
+          }
         }
       }`, {
                 owner: context.repo.owner,
