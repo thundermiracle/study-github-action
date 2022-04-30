@@ -19,7 +19,7 @@ async function run(): Promise<void> {
       pull_number: context.payload.pull_request!.number,
     });
 
-    core.debug(JSON.stringify(currentPr, null, 2));
+    core.debug(currentPr.data.user?.login || '<no user>');
 
     core.setOutput('time', new Date().toTimeString());
   } catch (error) {
