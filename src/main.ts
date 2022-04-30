@@ -40,7 +40,7 @@ async function run(): Promise<void> {
             reviewRequests(last: 1) {
               nodes {
                 requestedReviewer {
-                  User {
+                  ... on User {
                     login
                   }
                 }
@@ -54,13 +54,10 @@ async function run(): Promise<void> {
               author {
                 login
               }
-              reviewRequests(last: 100) {
-                nodes {
-                  requestedReviewer {
-                    User {
-                      login
-                    }
-                  }
+              suggestedReviewers {
+                isAuthor
+                reviewer {
+                  login
                 }
               }
             }

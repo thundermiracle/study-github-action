@@ -75,7 +75,7 @@ function run() {
             reviewRequests(last: 1) {
               nodes {
                 requestedReviewer {
-                  User {
+                  ... on User {
                     login
                   }
                 }
@@ -89,13 +89,10 @@ function run() {
               author {
                 login
               }
-              reviewRequests(last: 100) {
-                nodes {
-                  requestedReviewer {
-                    User {
-                      login
-                    }
-                  }
+              suggestedReviewers {
+                isAuthor
+                reviewer {
+                  login
                 }
               }
             }
