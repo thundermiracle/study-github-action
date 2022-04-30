@@ -34,6 +34,9 @@ async function run(): Promise<void> {
             additions
             deletions
             changedFiles
+            author {
+              login
+            }
           }
         }
       }`,

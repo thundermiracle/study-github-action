@@ -69,6 +69,9 @@ function run() {
             additions
             deletions
             changedFiles
+            author {
+              login
+            }
           }
         }
       }`, {
