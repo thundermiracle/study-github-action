@@ -46,6 +46,10 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const context = github.context;
+            if (context.eventName !== 'pull_request') {
+                core.info('This action only runs on pull_request events');
+                return;
+            }
             const token = core.getInput('token');
             const ms = core.getInput('milliseconds');
             const name = core.getInput('name');

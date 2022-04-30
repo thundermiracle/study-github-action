@@ -4,6 +4,10 @@ import * as github from '@actions/github';
 async function run(): Promise<void> {
   try {
     const context = github.context;
+    if (context.eventName !== 'pull_request') {
+      core.info('This action only runs on pull_request events');
+      return;
+    }
 
     const token = core.getInput('token');
     const ms: string = core.getInput('milliseconds');
