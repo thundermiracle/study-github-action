@@ -2,8 +2,6 @@
 import * as cp from 'child_process';
 import * as path from 'path';
 
-import { describe, expect, it } from '@jest/globals';
-
 import { wait } from '../src/wait';
 
 describe('main.ts', () => {

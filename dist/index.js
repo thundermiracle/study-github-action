@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(5924));
 const github = __importStar(__nccwpck_require__(1276));
 function run() {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const context = github.context;
@@ -55,7 +56,7 @@ function run() {
                 repo: context.repo.repo,
                 pull_number: context.payload.pull_request.number,
             });
-            core.debug(JSON.stringify(currentPr, null, 2));
+            core.debug(((_a = currentPr.data.user) === null || _a === void 0 ? void 0 : _a.login) || '<no user>');
             core.setOutput('time', new Date().toTimeString());
         }
         catch (error) {

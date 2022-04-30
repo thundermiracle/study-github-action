@@ -3,7 +3,12 @@ module.exports = {
   moduleFileExtensions: ['js', 'ts'],
   testMatch: ['**/*.test.ts'],
   transform: {
-    '^.+\\.ts$': 'ts-jest'
+    '^.+\\.ts$': [
+      '@swc/jest',
+      {
+        sourceMaps: true,
+      },
+    ],
   },
-  verbose: true
-}
+  verbose: true,
+};
