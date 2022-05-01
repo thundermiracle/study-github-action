@@ -62,7 +62,12 @@ function run() {
             });
             core.debug(((_a = currentPr.data.user) === null || _a === void 0 ? void 0 : _a.login) || '<no user>');
             const graphqlPr = yield octokit.graphql(`
-      query($owner: String!, $repo: String!, $pullNumber: Int!) {
+      query (
+        $owner: String!
+        $repo: String!
+        $pullNumber: Int!
+        $pullRequestNumber: String!
+      ) {
         repository(owner: $owner, name: $repo) {
           pullRequest(number: $pullNumber) {
             id
@@ -83,7 +88,11 @@ function run() {
               }
             }
           }
-          pullRequests(first: 2, orderBy: {field: CREATED_AT, direction: DESC}, before: $pullNumber) {
+          pullRequests(
+            first: 2
+            orderBy: { field: CREATED_AT, direction: DESC }
+            before: $pullRequestNumber
+          ) {
             nodes {
               id
               title
@@ -106,10 +115,12 @@ function run() {
             }
           }
         }
-      }`, {
+      }
+      `, {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pullNumber: context.payload.pull_request.number,
+                pullRequestNumber: context.payload.pull_request.number.toString(),
             });
             core.debug(JSON.stringify(graphqlPr, null, 2));
             core.setOutput('time', new Date().toTimeString());

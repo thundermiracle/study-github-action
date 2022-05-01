@@ -28,7 +28,12 @@ async function run(): Promise<void> {
 
     const graphqlPr = await octokit.graphql<Repository>(
       `
-      query($owner: String!, $repo: String!, $pullNumber: Int!) {
+      query (
+        $owner: String!
+        $repo: String!
+        $pullNumber: Int!
+        $pullRequestNumber: String!
+      ) {
         repository(owner: $owner, name: $repo) {
           pullRequest(number: $pullNumber) {
             id
@@ -49,7 +54,11 @@ async function run(): Promise<void> {
               }
             }
           }
-          pullRequests(first: 2, orderBy: {field: CREATED_AT, direction: DESC}, before: $pullNumber) {
+          pullRequests(
+            first: 2
+            orderBy: { field: CREATED_AT, direction: DESC }
+            before: $pullRequestNumber
+          ) {
             nodes {
               id
               title
@@ -72,11 +81,13 @@ async function run(): Promise<void> {
             }
           }
         }
-      }`,
+      }
+      `,
       {
         owner: context.repo.owner,
         repo: context.repo.repo,
         pullNumber: context.payload.pull_request!.number,
+        pullRequestNumber: context.payload.pull_request!.number.toString(),
       },
     );
 
