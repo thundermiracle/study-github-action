@@ -31,17 +31,18 @@ async function run(): Promise<void> {
         repository(owner: $owner, name: $repo) {
           pullRequest(number: $pullNumber) {
             id
-            additions
-            deletions
-            changedFiles
+            title
             author {
               login
             }
-            reviewRequests(last: 1) {
+            reviewRequests(last: 10) {
               nodes {
                 requestedReviewer {
                   ... on User {
                     login
+                  }
+                  ... on Team {
+                    name
                   }
                 }
               }
@@ -50,14 +51,21 @@ async function run(): Promise<void> {
           pullRequests(first: 2, orderBy: {field: CREATED_AT, direction: DESC}) {
             nodes {
               id
+              title
               createdAt
               author {
                 login
               }
-              suggestedReviewers {
-                isAuthor
-                reviewer {
-                  login
+              reviewRequests(last: 10) {
+                nodes {
+                  requestedReviewer {
+                    ... on User {
+                      login
+                    }
+                    ... on Team {
+                      name
+                    }
+                  }
                 }
               }
             }
