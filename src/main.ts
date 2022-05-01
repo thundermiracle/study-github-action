@@ -1,5 +1,8 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
+import { Repository } from '@octokit/graphql-schema';
+
+import { queryPullRequestsInfo } from './graphql';
 
 async function run(): Promise<void> {
   try {
@@ -24,6 +27,14 @@ async function run(): Promise<void> {
     });
 
     core.debug(currentPr.data.user?.login || '<no user>');
+
+    const graphqlPr = await octokit.graphql<Repository>(queryPullRequestsInfo, {
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      pullNumber: context.payload.pull_request!.number,
+    });
+
+    core.debug(JSON.stringify(graphqlPr, null, 2));
 
     core.setOutput('time', new Date().toTimeString());
   } catch (error) {
