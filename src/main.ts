@@ -49,7 +49,7 @@ async function run(): Promise<void> {
               }
             }
           }
-          pullRequests(first: 2, orderBy: {field: CREATED_AT, direction: DESC}) {
+          pullRequests(first: 2, orderBy: {field: CREATED_AT, direction: DESC}, before: $pullNumber) {
             nodes {
               id
               title
