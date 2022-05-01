@@ -1,5 +1,6 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
+import { Repository } from '@octokit/graphql-schema';
 
 async function run(): Promise<void> {
   try {
@@ -25,7 +26,7 @@ async function run(): Promise<void> {
 
     core.debug(currentPr.data.user?.login || '<no user>');
 
-    const graphqlPr = await octokit.graphql(
+    const graphqlPr = await octokit.graphql<Repository>(
       `
       query($owner: String!, $repo: String!, $pullNumber: Int!) {
         repository(owner: $owner, name: $repo) {
