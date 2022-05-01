@@ -2,6 +2,8 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import { Repository } from '@octokit/graphql-schema';
 
+import { queryPullRequestsInfo } from './graphql';
+
 async function run(): Promise<void> {
   try {
     const context = github.context;
@@ -26,70 +28,11 @@ async function run(): Promise<void> {
 
     core.debug(currentPr.data.user?.login || '<no user>');
 
-    const graphqlPr = await octokit.graphql<Repository>(
-      `
-      query (
-        $owner: String!
-        $repo: String!
-        $pullNumber: Int!
-        $pullRequestNumber: String!
-      ) {
-        repository(owner: $owner, name: $repo) {
-          pullRequest(number: $pullNumber) {
-            id
-            title
-            author {
-              login
-            }
-            reviewRequests(last: 10) {
-              nodes {
-                requestedReviewer {
-                  ... on User {
-                    login
-                  }
-                  ... on Team {
-                    name
-                  }
-                }
-              }
-            }
-          }
-          pullRequests(
-            first: 2
-            orderBy: { field: CREATED_AT, direction: DESC }
-            before: $pullRequestNumber
-          ) {
-            nodes {
-              id
-              title
-              createdAt
-              author {
-                login
-              }
-              reviewRequests(last: 10) {
-                nodes {
-                  requestedReviewer {
-                    ... on User {
-                      login
-                    }
-                    ... on Team {
-                      name
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      `,
-      {
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        pullNumber: context.payload.pull_request!.number,
-        pullRequestNumber: context.payload.pull_request!.number.toString(),
-      },
-    );
+    const graphqlPr = await octokit.graphql<Repository>(queryPullRequestsInfo, {
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      pullNumber: context.payload.pull_request!.number,
+    });
 
     core.debug(JSON.stringify(graphqlPr, null, 2));
 

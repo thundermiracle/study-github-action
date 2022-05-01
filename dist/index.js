@@ -1,6 +1,71 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 9611:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.queryPullRequestsInfo = void 0;
+exports.queryPullRequestsInfo = `#graphql
+  query (
+    $owner: String!
+    $repo: String!
+    $pullNumber: Int!
+  ) {
+    repository(owner: $owner, name: $repo) {
+      pullRequest(number: $pullNumber) {
+        id
+        title
+        author {
+          login
+        }
+        reviewRequests(last: 10) {
+          nodes {
+            requestedReviewer {
+              ... on User {
+                login
+              }
+              ... on Team {
+                name
+              }
+            }
+          }
+        }
+      }
+      pullRequests(
+        first: 2
+        orderBy: { field: CREATED_AT, direction: DESC }
+      ) {
+        nodes {
+          id
+          title
+          createdAt
+          author {
+            login
+          }
+          reviewRequests(last: 10) {
+            nodes {
+              requestedReviewer {
+                ... on User {
+                  login
+                }
+                ... on Team {
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+
+/***/ }),
+
 /***/ 3248:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -41,6 +106,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(5924));
 const github = __importStar(__nccwpck_require__(1276));
+const graphql_1 = __nccwpck_require__(9611);
 function run() {
     var _a;
     return __awaiter(this, void 0, void 0, function* () {
@@ -61,66 +127,10 @@ function run() {
                 pull_number: context.payload.pull_request.number,
             });
             core.debug(((_a = currentPr.data.user) === null || _a === void 0 ? void 0 : _a.login) || '<no user>');
-            const graphqlPr = yield octokit.graphql(`
-      query (
-        $owner: String!
-        $repo: String!
-        $pullNumber: Int!
-        $pullRequestNumber: String!
-      ) {
-        repository(owner: $owner, name: $repo) {
-          pullRequest(number: $pullNumber) {
-            id
-            title
-            author {
-              login
-            }
-            reviewRequests(last: 10) {
-              nodes {
-                requestedReviewer {
-                  ... on User {
-                    login
-                  }
-                  ... on Team {
-                    name
-                  }
-                }
-              }
-            }
-          }
-          pullRequests(
-            first: 2
-            orderBy: { field: CREATED_AT, direction: DESC }
-            before: $pullRequestNumber
-          ) {
-            nodes {
-              id
-              title
-              createdAt
-              author {
-                login
-              }
-              reviewRequests(last: 10) {
-                nodes {
-                  requestedReviewer {
-                    ... on User {
-                      login
-                    }
-                    ... on Team {
-                      name
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      `, {
+            const graphqlPr = yield octokit.graphql(graphql_1.queryPullRequestsInfo, {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pullNumber: context.payload.pull_request.number,
-                pullRequestNumber: context.payload.pull_request.number.toString(),
             });
             core.debug(JSON.stringify(graphqlPr, null, 2));
             core.setOutput('time', new Date().toTimeString());
